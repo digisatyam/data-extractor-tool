@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Extractor Pro - Emails & Mobiles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS Starts Here --- */
+        :root {
+            --primary-glow: rgba(0, 123, 255, 0.5);
+            --secondary-glow: rgba(23, 162, 184, 0.5);
+            --bg-color: #f0f2f5; /* Light grayish background */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --heading-color: #1a202c;
+            --subtle-text: #6c757d;
+            --border-color: #e2e8f0;
+            --accent-gradient: linear-gradient(135deg, #007bff 0%, #17a2b8 100%);
+            --accent-gradient-hover: linear-gradient(135deg, #0056b3 0%, #138496 100%);
+            --success-color: #28a745;
+            --font-family: 'Inter', sans-serif;
+            --border-radius-lg: 12px;
+            --border-radius-md: 8px;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+             /* Optional subtle gradient background */
+            /* background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%); */
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px; /* Wider container */
+            margin: 2rem auto;
+            padding: 2rem 2.5rem; /* More padding */
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease-in-out;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 2.25rem; /* Larger heading */
+            font-weight: 700;
+            color: var(--heading-color);
+            margin-bottom: 0.5rem;
+            /* Optional Gradient Text */
+             background: var(--accent-gradient);
+             -webkit-background-clip: text;
+             -webkit-text-fill-color: transparent;
+             background-clip: text;
+             text-fill-color: transparent;
+             display: inline-block; /* Needed for gradient text */
+        }
+
+        header p {
+            color: var(--subtle-text);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        main {
+            margin-bottom: 2rem;
+        }
+
+        .input-area {
+            margin-bottom: 2rem;
+            position: relative; /* For potential icon inside */
+        }
+
+        .input-area label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--heading-color);
+        }
+
+        textarea#inputText {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            resize: vertical;
+            min-height: 180px; /* Taller textarea */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        textarea#inputText:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .extract-button-wrapper {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center; /* Center content */
+            gap: 0.6em;
+            padding: 0.8rem 2rem; /* Larger padding */
+            font-size: 1.1rem; /* Slightly larger font */
+            font-weight: 600; /* Bolder font */
+            border: none;
+            border-radius: var(--border-radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease; /* Smoother transition */
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn svg {
+            fill: currentColor;
+            height: 1.1em; /* Slightly larger icon */
+            margin-bottom: -2px; /* Fine-tune alignment */
+        }
+
+        .btn-extract {
+            background: var(--accent-gradient);
+            color: #fff;
+        }
+
+        .btn-extract:hover {
+            background: var(--accent-gradient-hover);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px); /* Subtle lift */
+        }
+
+        .btn-copy {
+            background-color: var(--subtle-text);
+            color: #fff;
+            font-size: 0.8rem; /* Smaller copy button */
+            font-weight: 500;
+            padding: 0.4rem 0.8rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-copy:hover:not(:disabled) {
+            background-color: #5a6268;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background-color: #adb5bd;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to single column */
+            gap: 2rem;
+            opacity: 0; /* Initially hidden */
+            max-height: 0; /* Initially hidden */
+            overflow: hidden;
+            transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out;
+        }
+
+        .results-grid.visible {
+             opacity: 1;
+             max-height: 1000px; /* Adjust as needed, large enough */
+        }
+
+        .results-area {
+            background-color: #f8f9fa; /* Slightly different bg for results */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .results-area h2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--heading-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .count-badge {
+            font-weight: 500;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.2em 0.6em;
+            border-radius: 50px; /* Pill shape */
+            font-size: 0.9em;
+            margin-left: 0.5em;
+        }
+
+        .result-list {
+            background-color: var(--card-bg); /* White list background */
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-md);
+            padding: 0.5rem 1rem; /* Padding inside list */
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Custom Scrollbar (Optional but nice) */
+        .result-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .result-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .result-list::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        .result-list::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+
+
+        .result-list div {
+            padding: 0.6rem 0.2rem;
+            border-bottom: 1px solid #f0f2f5; /* Very light separator */
+            font-size: 0.95rem;
+            word-break: break-all;
+            transition: background-color 0.2s ease;
+            color: #495057;
+        }
+         .result-list div:hover {
+             background-color: #eef2ff; /* Subtle hover */
+         }
+
+        .result-list div:last-child {
+            border-bottom: none;
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--subtle-text);
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border: 1px dashed var(--border-color);
+            border-radius: var(--border-radius-md);
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--subtle-text);
+        }
+
+        /* Responsive Design */
+        /* Apply two-column layout for results on wider screens */
+        @media (min-width: 768px) {
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+            }
+        }
+
+        @media (max-width: 767px) {
+            .container {
+                margin: 1rem auto;
+                padding: 1.5rem;
+            }
+             header h1 {
+                font-size: 1.8rem;
+            }
+            header p {
+                 font-size: 1rem;
+            }
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 1rem;
+            }
+             textarea#inputText {
+                min-height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            html {
+                font-size: 15px;
+            }
+            .container {
+                margin: 0.5rem auto;
+                padding: 1rem;
+                border-radius: var(--border-radius-md); /* Smaller radius on mobile */
+            }
+            header h1 {
+                font-size: 1.6rem;
+            }
+            .btn-extract {
+                 width: 100%; /* Full width main button */
+             }
+            .results-area h2 {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .btn-copy {
+                align-self: flex-end; /* Copy button to the right */
+            }
+        }
+        /* --- CSS Ends Here --- */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Data Extractor Pro</h1>
+            <p>Instantly pull out all email addresses and mobile numbers from any messy text.</p>
+        </header>
+
+        <main>
+            <div class="input-area">
+                <label for="inputText">Paste Your Data Here:</label>
+                <textarea id="inputText" rows="12" placeholder="Just drop any text here... emails like user@domain.com, numbers like +91-1234567890 or 9876543210 will be found!"></textarea>
+            </div>
+
+            <div class="extract-button-wrapper">
+                 <button id="extractButton" class="btn btn-extract">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path fill="currentColor" d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z"/></svg>
+                    Extract Now
+                </button>
+            </div>
+
+            <!-- Results Grid -->
+            <div id="resultsGrid" class="results-grid">
+
+                <!-- Email Results Area -->
+                <section id="emailResultsArea" class="results-area">
+                    <h2>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="margin-right: 5px; vertical-align: -2px;"><path fill="currentColor" d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+                            Emails Found
+                            <span id="emailCountBadge" class="count-badge">0</span>
+                        </span>
+                        <button id="copyEmailsButton" class="btn btn-copy" title="Copy Emails" disabled>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>
+                            Copy
+                        </button>
+                    </h2>
+                    <div id="emailList" class="result-list">
+                        <!-- Extracted emails will be populated here -->
+                    </div>
+                    <div id="noEmails" class="no-results" style="display: none;">No valid email addresses found.</div>
+                </section>
+
+                <!-- Mobile Number Results Area -->
+                <section id="numberResultsArea" class="results-area">
+                     <h2>
+                         <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="margin-right: 5px; vertical-align: -2px;"><path fill="currentColor" d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
+                            Mobiles Found
+                            <span id="numberCountBadge" class="count-badge">0</span>
+                        </span>
+                        <button id="copyNumbersButton" class="btn btn-copy" title="Copy Numbers" disabled>
+                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><path d="M384 336H192c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16l140.1 0L400 115.9V320c0 8.8-7.2 16-16 16zM192 384H384c35.3 0 64-28.7 64-64V115.9c0-12.7-5.1-24.9-14.1-33.9L366.1 14.1c-9-9-21.2-14.1-33.9-14.1H192c-35.3 0-64 28.7-64 64V320c0 35.3 28.7 64 64 64zM64 128c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H256c35.3 0 64-28.7 64-64V416H272v32c0 8.8-7.2 16-16 16H64c-8.8 0-16-7.2-16-16V192c0-8.8 7.2-16 16-16H96V128H64z"/></svg>
+                            Copy
+                        </button>
+                    </h2>
+                    <div id="numberList" class="result-list">
+                        <!-- Extracted numbers will be populated here -->
+                    </div>
+                    <div id="noNumbers" class="no-results" style="display: none;">No valid mobile numbers found.</div>
+                </section>
+
+            </div> <!-- End .results-grid -->
+        </main>
+
+        <footer>
+            <p>&copy; 2023 Data Extractor Pro. Extract Smarter.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- JavaScript Starts Here ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all DOM elements
+            const extractButton = document.getElementById('extractButton');
+            const inputText = document.getElementById('inputText');
+            const resultsGrid = document.getElementById('resultsGrid');
+
+            // Email elements
+            const emailResultsArea = document.getElementById('emailResultsArea');
+            const emailListDiv = document.getElementById('emailList');
+            const emailCountBadge = document.getElementById('emailCountBadge');
+            const noEmailsDiv = document.getElementById('noEmails');
+            const copyEmailsButton = document.getElementById('copyEmailsButton');
+
+            // Number elements
+            const numberResultsArea = document.getElementById('numberResultsArea');
+            const numberListDiv = document.getElementById('numberList');
+            const numberCountBadge = document.getElementById('numberCountBadge');
+            const noNumbersDiv = document.getElementById('noNumbers');
+            const copyNumbersButton = document.getElementById('copyNumbersButton');
+
+            // Data storage
+            let extractedEmails = [];
+            let extractedNumbers = [];
+
+            // --- Regex Patterns ---
+            const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+            const numberRegex = /(?:(?:\+|00)?91[\s-]?)?(?:0[\s-]?)?([1-9]\d{9})\b/g;
+
+            // --- Main Extraction Logic ---
+            extractButton.addEventListener('click', () => {
+                const text = inputText.value;
+                resultsGrid.classList.remove('visible'); // Hide results initially for transition
+
+                if (!text.trim()) {
+                    alert("Please paste some data into the text area first!");
+                    return;
+                }
+
+                // Extract Emails
+                const emailMatches = text.match(emailRegex);
+                extractedEmails = emailMatches ? [...new Set(emailMatches)] : [];
+                displayResults(extractedEmails, emailListDiv, emailCountBadge, noEmailsDiv, copyEmailsButton, 'email');
+
+                // Extract Numbers
+                const numberMatchesIterator = text.matchAll(numberRegex);
+                const numbers = [];
+                for (const match of numberMatchesIterator) {
+                    if (match[1]) {
+                        numbers.push(match[1]);
+                    }
+                }
+                extractedNumbers = numbers.length > 0 ? [...new Set(numbers)] : [];
+                displayResults(extractedNumbers, numberListDiv, numberCountBadge, noNumbersDiv, copyNumbersButton, 'number');
+
+                // Show results grid smoothly
+                 // Use setTimeout to allow the DOM to update before adding the class
+                setTimeout(() => {
+                    resultsGrid.classList.add('visible');
+                 }, 10); // Small delay
+
+                 // Optional: Scroll to results after extraction
+                 resultsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            // --- Helper Function to Display Results ---
+            function displayResults(items, listDiv, countBadge, noResultsDiv, copyButton, type) {
+                listDiv.innerHTML = ''; // Clear previous results
+                noResultsDiv.style.display = 'none';
+                listDiv.style.display = 'block'; // Ensure list is visible if there are results
+
+                if (items.length > 0) {
+                    countBadge.textContent = items.length;
+                    copyButton.disabled = false;
+
+                    items.forEach(item => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.textContent = item;
+                        listDiv.appendChild(itemDiv);
+                    });
+                } else {
+                    countBadge.textContent = 0;
+                    copyButton.disabled = true;
+                    listDiv.style.display = 'none'; // Hide list container
+                    noResultsDiv.style.display = 'block';
+                }
+            }
+
+            // --- Copy to Clipboard Logic (Generic) ---
+            async function copyToClipboard(button, dataArray) {
+                if (!dataArray || dataArray.length === 0) return;
+
+                const textToCopy = dataArray.join('\n');
+                const originalButtonContent = button.innerHTML; // Store original SVG + text
+
+                 try {
+                    await navigator.clipboard.writeText(textToCopy);
+                    button.textContent = 'Copied!'; // Simple text feedback
+                    button.style.backgroundColor = 'var(--success-color)';
+
+                    setTimeout(() => {
+                        button.innerHTML = originalButtonContent; // Restore icon + text
+                        button.style.backgroundColor = ''; // Revert color
+                    }, 2000);
+
+                } catch (err) {
+                    console.error(`Failed to copy ${button === copyEmailsButton ? 'emails' : 'numbers'}: `, err);
+                    alert(`Failed to copy items to clipboard. Please try again or copy manually.`);
+                     // Optional: Revert button immediately on error
+                     button.innerHTML = originalButtonContent;
+                     button.style.backgroundColor = '';
+                }
+            }
+
+            // --- Event Listeners for Copy Buttons ---
+            copyEmailsButton.addEventListener('click', () => copyToClipboard(copyEmailsButton, extractedEmails));
+            copyNumbersButton.addEventListener('click', () => copyToClipboard(copyNumbersButton, extractedNumbers));
+
+            // --- Input Listener to Hide Results on Clear ---
+            inputText.addEventListener('input', () => {
+                if (inputText.value.trim() === '') {
+                    resultsGrid.classList.remove('visible');
+                    // Optionally reset counts and disable copy buttons immediately
+                    emailCountBadge.textContent = '0';
+                    numberCountBadge.textContent = '0';
+                    copyEmailsButton.disabled = true;
+                    copyNumbersButton.disabled = true;
+                    noEmailsDiv.style.display = 'none';
+                    noNumbersDiv.style.display = 'none';
+                     emailListDiv.style.display = 'block'; // Reset display
+                     numberListDiv.style.display = 'block'; // Reset display
+
+                }
+            });
+
+        });
+        // --- JavaScript Ends Here ---
+    </script>
+</body>
+</html>
